@@ -20,7 +20,7 @@ export type LocalGuardian = {
   address: string;
 };
 
-export type Student = {
+export type TStudent = {
   id: string;
   name: UserName;
   gender: 'male' | 'female';
