@@ -4,7 +4,7 @@ import {
   LocalGuardian,
   TStudent,
   UserName,
-} from './student/student.interface';
+} from './student.interface';
 
 const userNameSchema = new Schema<UserName>({
   firstName: {
