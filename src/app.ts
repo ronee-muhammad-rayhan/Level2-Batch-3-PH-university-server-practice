@@ -6,6 +6,7 @@ import express, { Application, NextFunction, Request, Response } from 'express';
 // import { StudentRoutes } from './app/modules/student/student.route';
 import { UserRoutes } from './app/modules/user/user.route';
 import globalErrorHandler from './app/middlewares/globalErrorHandler';
+import notFound from './app/middlewares/notFound';
 
 const app: Application = express();
 
@@ -41,5 +42,8 @@ app.use('/api/v1/users', UserRoutes);
 // app.get('/', getAController);
 
 app.use(globalErrorHandler);
+
+// Not Found
+app.use(notFound);
 
 export default app;
