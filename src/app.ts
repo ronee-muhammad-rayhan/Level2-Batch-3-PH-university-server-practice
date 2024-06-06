@@ -5,6 +5,7 @@ import cors from 'cors';
 import express, { Application, NextFunction, Request, Response } from 'express';
 // import { StudentRoutes } from './app/modules/student/student.route';
 import { UserRoutes } from './app/modules/user/user.route';
+import globalErrorHandler from './app/middlewares/globalErrorHandler';
 
 const app: Application = express();
 
@@ -39,15 +40,6 @@ app.use('/api/v1/users', UserRoutes);
 
 // app.get('/', getAController);
 
-app.use((err: any, req: Request, res: Response, next: NextFunction) => {
-  const statusCode = 500;
-  const message = 'Something went wrong';
-
-  return res.status(statusCode).json({
-    success: false,
-    message,
-    error: err,
-  });
-});
+app.use(globalErrorHandler);
 
 export default app;
