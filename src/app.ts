@@ -1,5 +1,8 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable no-unused-vars */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import cors from 'cors';
-import express, { Application /* , Request, Response */ } from 'express';
+import express, { Application, NextFunction, Request, Response } from 'express';
 // import { StudentRoutes } from './app/modules/student/student.route';
 import { UserRoutes } from './app/modules/user/user.route';
 
@@ -35,5 +38,16 @@ app.use('/api/v1/users', UserRoutes);
 // };
 
 // app.get('/', getAController);
+
+app.use((err: any, req: Request, res: Response, next: NextFunction) => {
+  const statusCode = 500;
+  const message = 'Something went wrong';
+
+  return res.status(statusCode).json({
+    success: false,
+    message,
+    error: err,
+  });
+});
 
 export default app;
