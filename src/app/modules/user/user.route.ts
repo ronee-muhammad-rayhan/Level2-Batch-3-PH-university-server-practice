@@ -1,23 +1,29 @@
 import express, { NextFunction, Request, Response } from 'express';
 import { UserControllers } from './user.controller';
+import { AnyZodObject } from 'zod';
+import { createStudentValidationSchema } from '../student/student.validation';
 
 const router = express.Router();
 
-const shenaBahini = (name) => {
+const validateRequest = (schema: AnyZodObject) => {
   return async (req: Request, res: Response, next: NextFunction) => {
-    //   console.log('i am a shenabahini');
-    //   console.log(req.body);
-    console.log(`i am a shenabahini and my name is ${name}`);
+    try {
+      //   validation check
+      // if everything allright next() ->
+      await schema.parseAsync({
+        body: req.body,
+      });
 
-    //   validation
-    // next();
-    //   next();
+      return next();
+    } catch (err) {
+      next(err);
+    }
   };
 };
 
 router.post(
   '/create-student',
-  shenaBahini('validateRequest'),
+  validateRequest(createStudentValidationSchema),
   UserControllers.createStudent,
 );
 
