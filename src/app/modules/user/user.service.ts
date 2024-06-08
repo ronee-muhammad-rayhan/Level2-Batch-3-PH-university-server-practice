@@ -4,8 +4,10 @@ import { TStudent } from '../student/student.interface';
 import { TUser } from './user.interface';
 import { User } from './user.model';
 // import { TAcademicSemester } from '../academicSemester/academicSemester.interface';
+import { AcademicSemester } from '../academicSemester/academicSemester.model';
+import { generateStudentId } from './user.utils';
 
-const createStudentIntoDB = async (password: string, studentData: TStudent) => {
+const createStudentIntoDB = async (password: string, payload: TStudent) => {
   // create a user object
   const userData: Partial<TUser> = {};
 
@@ -20,11 +22,28 @@ const createStudentIntoDB = async (password: string, studentData: TStudent) => {
   // set student role
   userData.role = 'student';
 
-  // year semesterCode 4 digit number
-  // const generateStudentId = (payload: TAcademicSemester) => {};
+  // find academic semester info
+  const admissionSemester = await AcademicSemester.findById(
+    payload.admissionSemester,
+  );
 
   // set generated id
-  userData.id = `generateStudentId()`;
+  // userData.id = generateStudentId(admissionSemester);
+  if (admissionSemester !== null) {
+    userData.id = generateStudentId(admissionSemester);
+  } else {
+    // console.error('admissionSemester is null');
+    // console.log('admissionSemester is null');
+    console.error('admissionSemester is null');
+  }
+
+  // Check for null before using the variable
+  // if (admissionSemester !== null) {
+  //   processSemester(admissionSemester);
+  // } else {
+  //   // Handle the case where admissionSemester is null
+  //   console.error('admissionSemester is null');
+  // }
 
   // create a user
   const newUser = await User.create(userData);
@@ -32,10 +51,10 @@ const createStudentIntoDB = async (password: string, studentData: TStudent) => {
   // create a student
   if (Object.keys(newUser).length) {
     // set id, _id as user
-    studentData.id = newUser.id; //embedding id
-    studentData.user = newUser._id; //reference _id
+    payload.id = newUser.id; //embedding id
+    payload.user = newUser._id; //reference _id
 
-    const newStudent = await Student.create(studentData);
+    const newStudent = await Student.create(payload);
     return newStudent;
   }
 };
