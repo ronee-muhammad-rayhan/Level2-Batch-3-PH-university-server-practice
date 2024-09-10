@@ -30,11 +30,16 @@ const createStudentIntoDB = async (password: string, payload: TStudent) => {
   // set generated id
   // userData.id = generateStudentId(admissionSemester);
   if (admissionSemester !== null) {
-    userData.id = generateStudentId(admissionSemester);
+    // userData.id = generateStudentId(admissionSemester);
+    // userData.id = 'await generateStudentId(admissionSemester)';
+    console.log({ admissionSemester });
+    userData.id = await generateStudentId(admissionSemester);
+    console.log(userData);
+    // console.log(userData);
   } else {
     // console.error('admissionSemester is null');
     // console.log('admissionSemester is null');
-    console.error('admissionSemester is null');
+    // console.error('admissionSemester is null');
   }
 
   // Check for null before using the variable
@@ -42,11 +47,14 @@ const createStudentIntoDB = async (password: string, payload: TStudent) => {
   //   processSemester(admissionSemester);
   // } else {
   //   // Handle the case where admissionSemester is null
-  //   console.error('admissionSemester is null');
+  // // console.error('admissionSemester is null');
   // }
 
   // create a user
+  // const newUser = await User.create(userData);
   const newUser = await User.create(userData);
+  // console.log(userData);
+  // console.log(newUser);
 
   // create a student
   if (Object.keys(newUser).length) {
