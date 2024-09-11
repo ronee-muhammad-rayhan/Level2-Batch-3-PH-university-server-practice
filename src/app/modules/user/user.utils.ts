@@ -13,7 +13,11 @@ const findLastStudentId = async () => {
       id: 1,
       _id: 0,
     },
-  ).lean();
+  )
+    .sort({
+      createdAt: -1,
+    })
+    .lean();
 
   //   203101   0001
   console.log(lastStudent?.id ? lastStudent.id.substring(6) : undefined);
@@ -25,7 +29,7 @@ export const generateStudentId = async (payload: TAcademicSemester) => {
   // first time 0000
   //   0001 => 1
   //   const currentId = (0).toString().padStart(4, '0');
-  const currentId = (0).toString();
+  const currentId = (await findLastStudentId()) || (0).toString();
 
   // console.log(await findLastStudentId());
 
